@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Pack } from "@potion/layout";
 import { Svg, Circle } from "@potion/element";
+import {generateBubbleData} from './generateBubblesData'
 
 const Bubbles = ({ colors }) => {
   const [bubbleData, setBubbleData] = useState([]);
   useEffect(() => {
-    const generateBubbleData = colors.map((_, i) => ({
-      value: Math.floor(Math.random() * (colors.length * 2)) + 1,
-      key: `${i + 1}`
-    }));
-    setBubbleData(generateBubbleData);
+    setBubbleData(generateBubbleData(colors));
   }, [colors]);
 
   return (
@@ -33,6 +30,7 @@ const Bubbles = ({ colors }) => {
                   return (
                     <Circle
                       key={key}
+                      data-testid='bubble'
                       cx={x}
                       cy={y}
                       r={r}

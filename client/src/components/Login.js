@@ -1,14 +1,56 @@
-import React from "react";
+import React, { useState } from "react"
+import { Box, TextField, Paper, Button } from "@material-ui/core"
+import { axiosWithAuth } from "./utils/axiosWithAuth"
+import { useHistory } from "react-router-dom"
 
 const Login = () => {
-  // make a post request to retrieve a token from the api
-  // when you have handled the token, navigate to the BubblePage route
-  return (
-    <>
-      <h1>Welcome to the Bubble App!</h1>
-      <p>Build a login page here</p>
-    </>
-  );
-};
+  const history = useHistory()
 
-export default Login;
+  const [item, setItem] = useState({ username: "", password: "" })
+
+  const updateHandler = (event) => {
+    const { name, value } = event.target
+    setItem({ ...item, [name]: value })
+  }
+
+  const submitHandler = (event) => {
+    event.preventDefault()
+    axiosWithAuth()
+      .post("/api/login", item)
+      .then((res) => {
+        localStorage.setItem("token", res.data.payload)
+        history.push("/bubbles")
+      })
+  }
+
+  return (
+    <Box align="center">
+      <Box maxWidth="50%">
+        <Paper>
+          <form>
+            <Box m={5}>
+              <TextField
+                label="Username"
+                name="username"
+                value={item.username}
+                onChange={updateHandler}
+              ></TextField>
+              <TextField
+                label="password"
+                type="password"
+                name="password"
+                value={item.password}
+                onChange={updateHandler}
+              ></TextField>
+              <Button onClick={submitHandler} color="primary">
+                Submit
+              </Button>
+            </Box>
+          </form>
+        </Paper>
+      </Box>
+    </Box>
+  )
+}
+
+export default Login

@@ -1,21 +1,25 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-
-import Login from "./components/Login";
-import "./styles.scss";
+import React from "react"
+import { BrowserRouter as Router, Route } from "react-router-dom"
+import Login from "./components/Login"
+import "./styles.scss"
+import { Container, Typography, Box } from "@material-ui/core"
+import BubblePage from "./components/BubblePage"
+import PrivateRoute from "./components/PrivateRoute"
 
 function App() {
   return (
     <Router>
-      <div className="App">
+      <Container maxWidth="md">
+        <Box my={3}>
+          <Typography align="center" variant="h3">
+            Bubbles of Color
+          </Typography>
+        </Box>
         <Route exact path="/" component={Login} />
-        {/* 
-          Build a PrivateRoute component that will 
-          display BubblePage when you're authenticated 
-        */}
-      </div>
+        <PrivateRoute path="/bubbles" component={BubblePage} />
+      </Container>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App
